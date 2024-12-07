@@ -1,5 +1,6 @@
 chromadb==0.5.20
-langchain==0.3.9
-langchain_community==0.3.8
+langchain==0.3.10
+langchain_community==0.3.10
 langchain_text_splitters==0.3.2
 transformers==4.46.3
+configparser==7.1.0
