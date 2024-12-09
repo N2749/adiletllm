@@ -1,6 +1,8 @@
 import chromadb
 from transformers import pipeline
 from langchain.schema.document import Document
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_ollama.llms import OllamaLLM
 
 from embedder import get_embedding_function
 from config_reader import get
@@ -9,17 +11,21 @@ from config_reader import get
 CHROMA_PATH     = get("database", "chroma_path")
 COLLECTION_NAME = get("database", "collection_name")
 EMBEDDING_MODEL = get("models", "embedder")
-ANSWERING_MODEL = get("models", "answerer")
+OLLAMA_MODEL    = get("models", "ollama")
+
+PROMPT_TEMPLATE = """
+Answer the question based only on the following context.
+If the context does not contain the answer, say 'Answer not found'.
+
+{context}
+
+Answer the question based on the above context: {question}
+"""
 
 
 def main():
-    collection = get_collection(CHROMA_PATH, COLLECTION_NAME)
-    question = "Is it legal to sell ice cream?"
-    query_results = collection.query(query_texts=[question], n_results=1)
-    context = query_results["documents"][0][0]
-
-    response = ask(question, context)
-    printResults(question, context, response)
+    question = "is it legal to smile in Republic of Kazakhstan?"
+    ask(question)
 
 
 def get_collection(chroma_path: str, collection_name: str):
@@ -31,23 +37,26 @@ def get_collection(chroma_path: str, collection_name: str):
     )
 
 
-def ask(question, context):
-    generator = pipeline(
-        "question-answering",
-        model=ANSWERING_MODEL,
-        tokenizer=ANSWERING_MODEL
-    )
-    return generator(question=question, context=context)
+def ask(query_text: str):
 
+    collection = get_collection(CHROMA_PATH, COLLECTION_NAME)
 
-def printResults(question, context, response):
-    print(f"Query: {question}")
-    print("Retrieved Context:", context)
+    # result is a dict that contains list of strings documents and metadata
+    # https://docs.trychroma.com/getting-started#6.-inspect-results
+    results = collection.query(query_texts=[query_text], n_results=5)
 
-    if response is not None:
-        print(f"Response '{response['answer']}'")
-    else:
-        print("Response is undefined")
+    context_text = "\n".join(results["documents"][0])
+    prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
+    prompt = prompt_template.format(context=context_text, question=query_text)
+
+    model = OllamaLLM(model=OLLAMA_MODEL)
+    response_text = model.invoke(prompt)
+
+    sources = [metadata.get("id", None) for metadata in results["metadatas"][0]]
+    
+    formatted_response = f"Response: {response_text}\nSources: {sources}\n"
+    print(formatted_response)
+    return response_text
 
 
 if __name__ == "__main__":
