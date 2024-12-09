@@ -23,13 +23,6 @@ def main():
     chunks = split_documents(docs)
     collection = save(chunks)
 
-    question = "Is it illegal to sell ice cream"
-    query_results = collection.query(query_texts=[question], n_results=1)
-    context = query_results["documents"][0][0]
-
-    response = ask(question, context)
-    printResults(question, context, response)
-
 
 def load_documents():
     document_loader = PyPDFDirectoryLoader(DATA_PATH)
@@ -42,8 +35,6 @@ def split_documents(documents: list[Document]):
         chunk_overlap=CHUNK_OVERLAP
     )
     return text_splitter.split_documents(documents)
-
-
 
 
 def save(chunks: list[Document]):
