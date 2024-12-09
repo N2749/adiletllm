@@ -7,11 +7,13 @@ from langchain_ollama.llms import OllamaLLM
 from embedder import get_embedding_function
 from config_reader import get
 
+
 # == getting constants from config file ==
 CHROMA_PATH     = get("database", "chroma_path")
 COLLECTION_NAME = get("database", "collection_name")
 EMBEDDING_MODEL = get("models", "embedder")
 OLLAMA_MODEL    = get("models", "ollama")
+
 
 PROMPT_TEMPLATE = """
 Answer the question based only on the following context.
