@@ -6,17 +6,16 @@ from langchain_community.document_loaders.pdf import PyPDFDirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.schema.document import Document
 
-# CONSTANTS
-# == DATA ==
-DATA_PATH = "data"
-CHUNK_SIZE = 800
-CHUNK_OVERLAP = 80
-# == CHROMA ==
-CHROMA_PATH = "chroma"
-COLLECTION_NAME = "legal-docs"
-# == MODELS ==
-EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-ANSWERING_MODEL = "deepset/roberta-base-squad2"
+from config_reader import get
+
+
+# == getting constants from config file ==
+CHROMA_PATH     = get("database", "chroma_path")
+COLLECTION_NAME = get("database", "collection_name")
+DATA_PATH       = get("database", "data_path")
+CHUNK_SIZE      = get("database", "chunk_size")
+CHUNK_OVERLAP   = get("database", "chunk_overlap")
+EMBEDDING_MODEL = get("models", "embedder")
 
 
 def main():
