@@ -13,8 +13,8 @@ from config_reader import get
 CHROMA_PATH     = get("database", "chroma_path")
 COLLECTION_NAME = get("database", "collection_name")
 DATA_PATH       = get("database", "data_path")
-CHUNK_SIZE      = get("database", "chunk_size")
-CHUNK_OVERLAP   = get("database", "chunk_overlap")
+CHUNK_SIZE      = int(get("database", "chunk_size"))
+CHUNK_OVERLAP   = int(get("database", "chunk_overlap"))
 EMBEDDING_MODEL = get("models", "embedder")
 
 
@@ -39,7 +39,7 @@ def split_documents(documents: list[Document]):
 
 def save(chunks: list[Document]):
     chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
-    embedder = get_embedding_function()
+    embedder = get_embedding_function(EMBEDDING_MODEL)
     collection = chroma_client.get_or_create_collection(
             name=COLLECTION_NAME,
             embedding_function=embedder
