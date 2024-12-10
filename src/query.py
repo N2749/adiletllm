@@ -26,7 +26,8 @@ Answer the question based on the above context: {question}
 
 
 def main():
-    question = "is it legal to smile in Republic of Kazakhstan?"
+    question = "is it legal to sell ice cream in Republic of Kazakhstan?"
+    print(f"Question:\n{question}")
     ask(question)
 
 
@@ -47,6 +48,8 @@ def ask(query_text: str):
     # https://docs.trychroma.com/getting-started#6.-inspect-results
     results = collection.query(query_texts=[query_text], n_results=5)
 
+    # print(results)
+
     context_text = "\n".join(results["documents"][0])
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
     prompt = prompt_template.format(context=context_text, question=query_text)
@@ -54,9 +57,9 @@ def ask(query_text: str):
     model = OllamaLLM(model=OLLAMA_MODEL)
     response_text = model.invoke(prompt)
 
-    sources = [metadata.get("id", None) for metadata in results["metadatas"][0]]
+    sources = "\n".join([metadata.get("legal_ref", None) for metadata in results["metadatas"][0]])
     
-    formatted_response = f"Response: {response_text}\nSources: {sources}\n"
+    formatted_response = f"Response:\n{response_text}\n\nSources:\n{sources}\n"
     print(formatted_response)
     return response_text
 
