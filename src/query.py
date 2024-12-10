@@ -26,7 +26,7 @@ Answer the question based on the above context: {question}
 
 
 def main():
-    question = "is it legal to smile in Republic of Kazakhstan?"
+    question = "Is Kazakhstan secular country?"
     ask(question)
 
 
