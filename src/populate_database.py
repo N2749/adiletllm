@@ -7,6 +7,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.schema.document import Document
 
 from config_reader import get
+from embedder import get_embedding_function
 
 
 # == getting constants from config file ==
