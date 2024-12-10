@@ -9,7 +9,7 @@ machine-learning project
 We highly encourage you to use venv. If you don't want to then 
 proceed to [launching query](#launching-query)
 
-# TODO: how to make venv
+TODO: how to make venv
 
 #### Downloading dependencies
 while using venv or not:
@@ -23,6 +23,10 @@ official ollama website https://ollama.com/download
 
 After downloading ollama you need to pull concrete model that will be used as
 answering model. You can found it in `config.ini` under `models` section.
+To download model you can run:
+```
+ollama pull model_name
+```
 
 Then when you are in project root run:
 ```
