@@ -6,3 +6,5 @@ langchain_ollama==0.2.1
 langchain_text_splitters==0.3.2
 transformers==4.46.3
 configparser==7.1.0
+pypdf==5.1.0
+sentence-transformers==3.3.1
