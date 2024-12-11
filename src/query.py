@@ -61,7 +61,7 @@ def ask(query_text: str):
     
     formatted_response = f"Response:\n{response_text}\n\nSources:\n{sources}\n"
     print(formatted_response)
-    return response_text
+    return formatted_response
 
 
 if __name__ == "__main__":

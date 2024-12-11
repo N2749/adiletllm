@@ -9,3 +9,4 @@ configparser==7.1.0
 pypdf==5.1.0
 sentence-transformers==3.3.1
 PyPDF2==3.0.1
+streamlit==1.41.0
