@@ -136,7 +136,6 @@ def calculate_chunk_ids(chunks):
     last_section = None
     last_chapter = None
     last_article = None
-    last_clause = None
 
     for i, chunk in enumerate(chunks):
 
@@ -146,27 +145,28 @@ def calculate_chunk_ids(chunks):
         text = chunk.page_content
         # Indicates that file has changed
         if source != chunk.metadata.get('source'):
+            print("Changed!")
             source = chunk.metadata.get('source')
 
             # One document contains only one law, so we need to change the
             # `last_law` varibale only if the file changes
-            last_law = last_law or get_law(text)
+            last_law = get_law(text) or last_law
 
-        last_chapter = last_chapter or get_chapter(text)
-        last_section = last_section or get_section(text)
-        last_article = last_article or get_article(text)
-        last_clause  = last_clause  or get_clause(text)
+        last_chapter = get_chapter(text) or last_chapter
+        last_section = get_section(text) or last_section
+        last_article = get_article(text) or last_article
 
         legal_ref = ""
         legal_ref = legal_ref + (       last_law     if last_law     else '')
         legal_ref = legal_ref + (', ' + last_chapter if last_chapter else '')
         legal_ref = legal_ref + (', ' + last_section if last_section else '')
         legal_ref = legal_ref + (', ' + last_article if last_article else '')
-        legal_ref = legal_ref + (', ' + last_clause  if last_clause  else '')
 
         # Calculate metadata
         chunk.metadata["id"] = f"{chunk.metadata.get('source')}:{current_chunk_index}"
+        print(f"{chunk.metadata['id']} {legal_ref}")
         chunk.metadata["legal_ref"] = legal_ref
+
 
 
     return chunks
@@ -190,21 +190,10 @@ def get_chapter(text):
 
 
 def get_article(text):
-    article_match = re.search(r"Article\s+(\d+)\.?\s*(.+)?", text, re.IGNORECASE | re.MULTILINE)
-    if not article_match: return None
+    article_match = re.search(r"^(?!.*Footnote\.).*?Article\s+(\d+)\.?\s*(.+)?", text, re.IGNORECASE | re.MULTILINE)
+    article_number = article_match.group(1) if article_match else None
+    return f"Article {article_number}" if article_number else None
 
-    article_number = article_match.group(1)
-    article_title = article_match.group(2).strip() if article_match.group(2) else None
-    return f"Article {article_number} {article_title}"
-
-
-def get_clause(text):
-    item_match = re.search(r"(\d+)\)\s+(.+)", text, re.IGNORECASE | re.MULTILINE)
-    if not item_match: return None
-
-    item_number = f"Item {item_match.group(1)}"
-    item_title = item_match.group(2).strip()
-    return f"Clause {item_number}"
 
 if __name__ == "__main__":
     main()
