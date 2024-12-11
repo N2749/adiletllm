@@ -4,8 +4,8 @@ from langchain.schema.document import Document
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama.llms import OllamaLLM
 
-from embedder import get_embedding_function
-from config_reader import get
+from src.embedder import get_embedding_function
+from src.config_reader import get
 
 
 # == getting constants from config file ==
@@ -29,6 +29,8 @@ def main():
     question = "Is Kazakhstan secular country?"
     ask(question)
 
+def test():
+    return "heh"
 
 def get_collection(chroma_path: str, collection_name: str):
     chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
@@ -58,7 +60,7 @@ def ask(query_text: str):
     
     formatted_response = f"Response: {response_text}\nSources: {sources}\n"
     print(formatted_response)
-    return response_text
+    return formatted_response
 
 
 if __name__ == "__main__":

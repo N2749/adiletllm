@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Title
+{% endblock %}
+
+{% block content %}
+<br>
+<h1 style="text-align:center">AdiletLLM. Know your laws!</h1>
+<br>
+<form style="text-align:center" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="text" name="question">
+    <button type="submit" >Ask</button>
+</form>
+{% if is_post_request %}
+<br>
+<h2 style="text-align:center">{{ answer }}</h2>
+{% endif %}
+{% endblock %}
