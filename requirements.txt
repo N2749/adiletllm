@@ -8,3 +8,4 @@ transformers==4.46.3
 configparser==7.1.0
 pypdf==5.1.0
 sentence-transformers==3.3.1
+PyPDF2==3.0.1
