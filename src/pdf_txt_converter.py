@@ -31,7 +31,6 @@ def convert_dir(input_dir, output_dir):
     for root, _, files in os.walk(input_dir):
         total = len(files)
         for i, file in enumerate(files):
-            simple_progress_bar(i, total, prefix="Checking pdf files for conversion to txt")
 
             if not file.endswith(".pdf"):
                 continue

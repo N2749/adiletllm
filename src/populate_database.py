@@ -99,9 +99,6 @@ def merge_chunks(existing_items, chunks_with_ids, collection):
         new_chunk_ids = [chunk.metadata["id"] for chunk in new_chunks]
         metadatas = [chunk.metadata for chunk in new_chunks]
 
-        # print(f"new_chunks[0] {new_chunks[0]}")
-        # print(f"metadatas[0]  {metadatas[0]}")
-
         process_in_batches(
             col=collection,
             docs=documents,
@@ -145,7 +142,6 @@ def calculate_chunk_ids(chunks):
         text = chunk.page_content
         # Indicates that file has changed
         if source != chunk.metadata.get('source'):
-            print("Changed!")
             source = chunk.metadata.get('source')
 
             # One document contains only one law, so we need to change the
@@ -164,7 +160,6 @@ def calculate_chunk_ids(chunks):
 
         # Calculate metadata
         chunk.metadata["id"] = f"{chunk.metadata.get('source')}:{current_chunk_index}"
-        print(f"{chunk.metadata['id']} {legal_ref}")
         chunk.metadata["legal_ref"] = legal_ref
 
 
