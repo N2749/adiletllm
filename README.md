@@ -33,6 +33,13 @@ Then when you are in project root run:
 python src/query.py
 ```
 
+#### Web interface
+Here we used streamlit to expose application on the localhost.
+To do that just run:
+```
+streamlit run src/web.py
+```
+
 ### Files, and their applications
 
 `populate_database.py` - takes all documents from $DATA\_FOLDER, splits them,
