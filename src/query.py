@@ -59,7 +59,7 @@ def ask(query_text: str):
 
     sources = "\n".join([metadata.get("legal_ref", None) for metadata in results["metadatas"][0]])
     
-    formatted_response = f"Response:\n{response_text}\n\nSources:\n{sources}\n"
+    formatted_response = f"{response_text}\n\nSources:\n{sources}\n"
     print(formatted_response)
     return formatted_response
 
